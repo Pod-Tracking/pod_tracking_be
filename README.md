@@ -1,5 +1,8 @@
 # Pod Tracking
 
+![Now this is podracing](https://i.makeagif.com/media/6-21-2014/ozc7Hm.gif)
+***"Now THIS is Pod Tracking"***
+
 ## Introduction
 Welcome to the initial repository of Pod Tracking! Pod Tracking is a application that allows Magic The Gathering players to track their group's game history, game and player statistics, and eventually, deck statistics. This repository houses the codebase for our backend services, crafted using Python and the Django REST framework.
 
