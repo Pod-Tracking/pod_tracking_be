@@ -12,10 +12,10 @@ Welcome to the initial repository of Pod Tracking! Pod Tracking is a application
 - [Key Features](#key-features)
 - [Getting Started](#getting-started)
 - [RESTful Endpoints](#restful-endpoints)
-  - [Pods](#Pods)
-  - [Players](#Players)
-  - [Decks](#Decks)
-- [Dev Team](#DevTeam)
+  - [Pods](#pods)
+  - [Players](#players)
+  - [Decks](#decks)
+- [Dev Team](#dev-team)
 ---
 
 ## Directory
