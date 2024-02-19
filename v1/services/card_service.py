@@ -3,14 +3,13 @@ import requests
 class CardService:
   base_url = 'https://api.scryfall.com/cards'
 
-  def search_cards(query):
+  def search_cards(name):
     # url = base_url + '/cards/search'
     url = 'https://api.scryfall.com/cards/named?'
-    params = {'fuzzy': query}
+    params = {'fuzzy': name}
     response = requests.get(url, params=params)
 
     if response.status_code == 200:
-      data = response.json()
-      return data.get('data', [])
+      return [response.json()]
     else:
       return []

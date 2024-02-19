@@ -17,10 +17,10 @@ Including another URLconf
 
 from django.urls import path
 from django.conf import settings
-# from .veiws import *
+from .views import card_views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    
+  path('search_cards/', card_views.find_cards)
 ]
 

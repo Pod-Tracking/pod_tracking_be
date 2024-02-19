@@ -3,10 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..services.card_service import CardService
-from ..serializers import CardSerializer
+# from ..serializers import CardSerializer
 from ..models.card_model import Card
 
-def populate_cards_view(request):
+def find_cards(request):
   query = request.GET.get('query')
   if query:
     cards_data = CardService.search_cards(query)
@@ -18,9 +18,9 @@ def populate_cards_view(request):
         # color=details.get('color'),
         type_line=details.get('type_line'),
         rarity=details.get('rarity'),
-        cmdr_legal=details.get('legalities'[12]),
-        img=details.get('image_uris'[2]),
-        purchase_uris=details.get('purchase_uris'[0])
+        cmdr_legal=details.get('legalities').get('commander'),
+        img=details.get('image_uris').get('normal'),
+        purchase_uris=details.get('purchase_uris').get('tcgplayer')
       )
       card.save()
     return JsonResponse({'message': 'Card populated successfully'})
