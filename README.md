@@ -19,6 +19,7 @@ Welcome to the initial repository of Pod Tracking! Pod Tracking is a application
   - [Pods](#pods)
   - [Players](#players)
   - [Decks](#decks)
+  - [Commanders](#commanders)
 - [Dev Team](#dev-team)
 ---
 
@@ -51,12 +52,13 @@ Base url to reach the endpoints listed below:
 (base deployment url here)
 ```
 
-### Pods
-
 ### Players
+
+### Pods
 
 ### Decks
 
+### Commanders
 
 ## Dev Team
 

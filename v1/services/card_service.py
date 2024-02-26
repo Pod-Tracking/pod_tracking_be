@@ -1,15 +1,13 @@
 import requests
 
+# Not currently in use!
 class CardService:
-  base_url = 'https://api.scryfall.com/cards'
+    def search_cards(search_query):
+        url = 'https://api.magicthegathering.io/v1/cards?'
+        params = {'name': search_query}
+        response = requests.get(url, params=params)
 
-  def search_cards(name):
-    # url = base_url + '/cards/search'
-    url = 'https://api.scryfall.com/cards/named?'
-    params = {'fuzzy': name}
-    response = requests.get(url, params=params)
-
-    if response.status_code == 200:
-      return [response.json()]
-    else:
-      return []
+        if response.status_code == 200:
+          return [response.json()]
+        else:
+          return []
