@@ -5,4 +5,4 @@ import pdb
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['name', 'photo', 'email', 'password']
+        fields = ['id', 'name', 'photo', 'email', 'password']

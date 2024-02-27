@@ -6,4 +6,4 @@ from ..models.deck_model import Deck
 class DeckSerializer(serializers.ModelSerializer):
     class Meta:
         model = Deck
-        fields = ['name', 'player', 'colors', 'wins', 'losses']
+        fields = ['id', 'name', 'player', 'colors', 'wins', 'losses', 'created_date', 'updated_date']

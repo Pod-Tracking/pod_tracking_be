@@ -5,4 +5,4 @@ import pdb
 class CommanderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Commander
-        fields = ['name', 'colors', 'img']
+        fields = ['id', 'name', 'colors', 'img']
