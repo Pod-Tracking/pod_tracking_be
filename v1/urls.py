@@ -21,11 +21,13 @@ from .views import player_views, deck_views, commander_views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
+    # Player endpoints
     path('players/', player_views.player_list),
-    path('players/<int:player_id>', player_views.player_details),
+    path('players/<int:player_id>/', player_views.player_details),
+    # Deck endpoints
     path('players/<int:player_id>/decks/', deck_views.deck_list),
     path('players/<int:player_id>/decks/<int:deck_id>/', deck_views.deck_details),
-
+    # Commander endpoints
     path('decks/<int:deck_id>/commanders/', commander_views.commander_list),
     path('decks/<int:deck_id>/commanders/<int:commander_id>/', commander_views.commander_details),
 ]
