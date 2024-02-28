@@ -7,7 +7,7 @@ class Deck(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=False)
     colors = models.CharField(max_length=100, default='')
     wins = models.IntegerField(default=0)
-    losses = models.IntegerField(default=0)
+    total_games = models.IntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now=True)
 
