@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..serializers.deck_serializer import DeckSerializer
-from ..serializers.player_serializer import PlayerSerializer
+# from ..serializers.player_serializer import PlayerSerializer
 # from ..serializers.commander_serializer import CommanderSerializer
 from ..models.deck_model import Deck
 from ..models.player_model import Player
@@ -20,7 +20,7 @@ def deck_list(request, player_id):
         return get_deck_list(request, check_for_player)
     elif request.method == 'POST':
         return create_deck(request)
-    
+
 def get_deck_list(request, check_for_player):
     decks = Deck.objects.filter(player=check_for_player)
     serializer = DeckSerializer(decks, many=True)
@@ -51,7 +51,7 @@ def deck_details(request, deck_id, player_id):
         return update_deck(deck, request.data)
     elif request.method == 'DELETE':
         return delete_deck(deck)
-    
+
 def get_deck_details(deck):
     serializer = DeckSerializer(deck)
     return Response(serializer.data)
