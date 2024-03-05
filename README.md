@@ -99,8 +99,13 @@ POST players/
 <summary> Endpoint Details </summary>
 
 Request:
-```
-No Parameters
+```json
+{
+  "name": "Jenny",
+  "photo": null,
+  "email": "wombo_combo@gmail.com",
+  "password": "password"
+}
 ```
 
 | Code | Description |
