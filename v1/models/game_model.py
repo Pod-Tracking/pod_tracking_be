@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from ..models.pod_model import Pod
 from ..models.deck_model import Deck
 from ..models.pod_player_model import PodPlayer
@@ -10,8 +11,11 @@ class Game(models.Model):
     pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
     winner = models.ForeignKey(Deck, on_delete=models.SET_NULL, related_name='won_games', null=True)
     decks = models.ManyToManyField(Deck, related_name='all_games')
+
     game_log = models.TextField(max_length=1000, null=False, default='')
-    created_date = models.DateTimeField(auto_now_add=True)
+
+    created_at = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 #     def save(self, *args, **kwargs):
 #         super().save(*args, **kwargs)

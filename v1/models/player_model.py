@@ -1,10 +1,13 @@
 from django.db import models
+from django.utils import timezone
 
 class Player(models.Model):
     name = models.CharField(max_length=150)
     photo = models.ImageField(upload_to='images/', null=True, blank=True)
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=50)
+
+    # the lower attributes maybe calculated through SQL queries
     total_wins = models.IntegerField(default=0)
     total_games = models.IntegerField(default=0)
     total_win_perc = models.FloatField(default=0)
@@ -12,6 +15,9 @@ class Player(models.Model):
     kill_avg = models.FloatField(default=0)
     games_as_arch = models.IntegerField(default=0)
     wins_as_arch = models.IntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
