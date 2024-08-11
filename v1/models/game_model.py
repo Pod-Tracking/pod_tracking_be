@@ -14,7 +14,7 @@ class Game(models.Model):
 
     game_log = models.TextField(max_length=1000, null=False, default='')
 
-    created_at = models.DateTimeField(auto_now_add=True, default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 #     def save(self, *args, **kwargs):
