@@ -1,13 +1,12 @@
 from django.db import models
-from django.utils import timezone
-# from ..models.deck_model import Deck
+from ..models.deck_model import Deck
 
 class Commander(models.Model):
-    # deck = models.OneToOneField(Deck, on_delete=models.CASCADE, null=False, default=None)
+    deck = models.OneToOneField(Deck, on_delete=models.CASCADE, null=False, default=None)
 
     name = models.CharField(max_length=255)
     colors = models.CharField(max_length=255, blank=True, null=True)
-    img = models.URLField()
+    photo = models.URLField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

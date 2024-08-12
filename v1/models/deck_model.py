@@ -1,13 +1,10 @@
 from django.db import models
 from ..models.player_model import Player
-from ..models.commander_model import Commander
 from ..enums.deck_type_enum import DeckType
 from ..enums.tcg_type_enum import TcgType
-from django.utils import timezone
 
 class Deck(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=False)
-    cmdr = models.OneToOneField(Commander, on_delete=models.SET_NULL, null=True, blank=True)
 
     name = models.CharField(max_length=255, null=False)
     tcg = models.CharField(max_length=50, null=False, choices=TcgType.choices())
@@ -23,9 +20,3 @@ class Deck(models.Model):
 
     def __str__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        if self.cmdr:
-            self.photo = self.cmdr.img
-            self.colors = self.cmdr.colors
-        super().save(*args, **kwargs)
