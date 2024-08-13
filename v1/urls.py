@@ -17,7 +17,7 @@ Including another URLconf
 
 from django.urls import path
 from django.conf import settings
-from .views import player_views, deck_views, commander_views, pod_views
+from .views import player_views, deck_views, commander_views, pod_views, pod_player_views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
@@ -33,5 +33,11 @@ urlpatterns = [
     # Pod endpoints
     path('pods', pod_views.pod_list),
     path('pods/<int:pod_id>', pod_views.pod_details),
+    # Pods by Player IDs endpoints
+    path('players/<int:player_id>/pods', pod_player_views.pods_by_player_list),
+    path('players/<int:player_id>/pods/<int:pod_id>', pod_player_views.pod_by_player_details),
+    # Players by Pod IDs endpoints
+    path('pods/<int:pod_id>/players', pod_player_views.players_by_pod),
+    path('pods/<int:pod_id>/players/<int:player_id>', pod_player_views.players_by_pod),
 ]
 

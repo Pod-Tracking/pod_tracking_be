@@ -8,11 +8,11 @@ class PodPlayer(models.Model):
 
     total_wins = models.IntegerField(default=0)
     total_games = models.IntegerField(default=0)
-    total_win_perc = models.FloatField(default=0)
+    total_win_percentage = models.FloatField(default=0)
     total_kills = models.IntegerField(default=0)
-    kill_avg = models.FloatField(default=0)
-    games_as_arch = models.IntegerField(default=0)
-    wins_as_arch = models.IntegerField(default=0)
+    kill_average = models.FloatField(default=0)
+    games_as_archenemy = models.IntegerField(default=0)
+    wins_as_archenemy = models.IntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -22,14 +22,14 @@ class PodPlayer(models.Model):
     
     def calc_win_perc(self):
         if self.total_games > 0:
-            self.total_win_perc = (self.total_wins / self.total_games) * 100
+            self.total_win_percentage = (self.total_wins / self.total_games) * 100
         else:
-            self.total_win_perc = 0.0
+            self.total_win_percentage = 0.0
         self.save()
 
-    def calc_kill_avg(self):
+    def calc_kill_average(self):
         if self.total_kills > 0:
-            self.kill_avg = (self.total_kills / self.total_games) * 100
+            self.kill_average = (self.total_kills / self.total_games) * 100
         else:
             self.total_kills = 0
         self.save()
