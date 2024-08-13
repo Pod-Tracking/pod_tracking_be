@@ -8,6 +8,6 @@ class CardService:
         response = requests.get(url, params=params)
 
         if response.status_code == 200:
-          return [response.json()]
+            return [response.json()]
         else:
-          return []
+            return []
