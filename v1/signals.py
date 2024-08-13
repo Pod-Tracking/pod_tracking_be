@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from .models.commander_model import Commander
-# from .models.deck_model import Deck
 
 @receiver(post_save, sender=Commander)
 # If a new commander is created, update the colors of the related deck

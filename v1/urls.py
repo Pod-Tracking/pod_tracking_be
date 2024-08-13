@@ -17,12 +17,12 @@ Including another URLconf
 
 from django.urls import path
 from django.conf import settings
-from .views import player_views, deck_views, commander_views
+from .views import player_views, deck_views, commander_views, pod_views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     # Player endpoints
-    path('players/', player_views.player_list),
+    path('players', player_views.player_list),
     path('players/<int:player_id>', player_views.player_details),
     # Deck endpoints
     path('players/<int:player_id>/decks', deck_views.deck_list),
@@ -30,5 +30,8 @@ urlpatterns = [
     # MTG Commander endpoints
     path('players/<int:player_id>/decks/<int:deck_id>/create_commander', commander_views.commander_list),
     path('players/<int:player_id>/decks/<int:deck_id>/deck_commander/<int:commander_id>', commander_views.commander_details),
+    # Pod endpoints
+    path('pods', pod_views.pod_list),
+    path('pods/<int:pod_id>', pod_views.pod_details),
 ]
 
