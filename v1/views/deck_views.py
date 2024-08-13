@@ -5,7 +5,6 @@ from rest_framework import status
 from ..serializers.deck_serializer import DeckSerializer
 from ..models.deck_model import Deck
 from ..models.player_model import Player
-import pdb
 
 
 @api_view(['GET', 'POST'])
@@ -29,7 +28,7 @@ def create_deck(data: dict, player_id: int):
     new_deck_data = {
         "name": data["name"],
         "player": player_id,
-        "tcg": data["tcg"],
+        "tcg_type": data["tcg_type"],
         "deck_type": data["deck_type"]
     }
 

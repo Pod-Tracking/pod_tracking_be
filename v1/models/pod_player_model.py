@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from ..models.player_model import Player
 from ..models.pod_model import Pod
 
@@ -34,17 +33,6 @@ class PodPlayer(models.Model):
         else:
             self.total_kills = 0
         self.save()
-
-    # def save(self, *args, **kwargs):
-    #     if self.pk is None:
-    #         for deck in self.decks.all():
-    #             deck.total_games += 1
-    #             deck.save()
-    #         if self.winner:
-    #             self.winner.wins += 1
-    #             self.winner.save()
-    #         for deck in self.decks.exclude(pk=self.winner.pk):
-    #             deck.update_win_percentage()
-    #             # update PodPlayer
     
     # Next step is to automate the values of pod_player's wins, games, games_as_arch, etc, as game objects are logged...
+    

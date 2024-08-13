@@ -7,7 +7,7 @@ class Deck(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, null=False)
 
     name = models.CharField(max_length=255, null=False)
-    tcg = models.CharField(max_length=50, null=False, choices=TcgType.choices())
+    tcg_type = models.CharField(max_length=50, null=False, choices=TcgType.choices())
     deck_type = models.CharField(max_length=50, null=True, choices=DeckType.choices())
     # colors and photo need to set to null when the leader is deleted. Create logic for this functionality.
     colors = models.CharField(max_length=255, blank=True, null=True)
