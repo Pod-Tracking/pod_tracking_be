@@ -18,7 +18,7 @@ def check_for_deck_object(player_id: int, deck_id: int) -> Deck:
 
 @api_view(['POST'])
 def commander_list(request, player_id: int, deck_id: int):
-    deck = check_for_deck_object(player_id, deck_id)
+    check_for_deck_object(player_id, deck_id)
 
     data = request.data
     colors = data.get('colors')
@@ -29,18 +29,16 @@ def commander_list(request, player_id: int, deck_id: int):
         "deck": deck_id,
         "colors": color_values,
         "photo": data.get('img')
-        }
+    }
 
     serializer = CommanderSerializer(data=card_data)
     if serializer.is_valid():
-        card = serializer.save()
-        deck.deck_leader = card
-        deck.save()
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 def commander_details(request, player_id: int, deck_id: int, commander_id: int):
     check_for_deck_object(player_id, deck_id)
     
@@ -51,29 +49,12 @@ def commander_details(request, player_id: int, deck_id: int, commander_id: int):
     
     if request.method == 'GET':
         return get_commander_details(commander)
-    elif request.method == 'PUT':
-        return update_commander(commander, request.data)
     elif request.method == 'DELETE':
         return delete_commander(commander)
     
 def get_commander_details(commander: Commander):
     serializer = CommanderSerializer(commander)
     return Response(serializer.data)
-
-def update_commander(commander: Commander, data: dict):
-    color_values = process_colors(data["colors"])
-
-    updated_commander_data = {
-        "name": data["name"],
-        "colors": color_values,
-        "photo": data["img"]
-    }
-
-    commander_data = CommanderSerializer(commander, data=updated_commander_data, partial=True)
-    if commander_data.is_valid():
-        commander_data.save()
-        return Response(commander_data.data)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def delete_commander(commander: Commander):
     commander.delete()
