@@ -1,10 +1,8 @@
 from django.db import models
 from ..models.pod_model import Pod
-from ..models.deck_model import Deck
 
 class Game(models.Model):
     pod = models.ForeignKey(Pod, on_delete=models.CASCADE)
-    winner = models.ForeignKey(Deck, on_delete=models.SET_NULL, related_name='won_games', null=True)
 
     total_turns = models.IntegerField(default=None, null=True)
     game_log = models.TextField(max_length=1000, null=True, default=None)

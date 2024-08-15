@@ -11,8 +11,8 @@ class Deck(models.Model):
     deck_type = models.CharField(max_length=50, null=True, choices=DeckType.choices())
     colors = models.CharField(max_length=255, blank=True, null=True)
     photo = models.URLField(null=True, blank=True)
-    total_wins = models.IntegerField(default=0)
     total_games = models.IntegerField(default=0)
+    total_wins = models.IntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

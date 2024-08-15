@@ -8,8 +8,8 @@ class Player(models.Model):
 
     total_games = models.IntegerField(default=0)
     total_wins = models.IntegerField(default=0)
-    games_as_arch = models.IntegerField(default=0)
-    wins_as_arch = models.IntegerField(default=0)
+    games_as_archenemy = models.IntegerField(default=0)
+    wins_as_archenemy = models.IntegerField(default=0)
     total_kills = models.IntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
