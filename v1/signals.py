@@ -12,12 +12,32 @@ ensure the automated game logic either succeeds altogether
 or fails altogether.
 """
 
+# Helper method
+def update_stats(instance, stat_object: object, operation: str, is_deck=True):
+    if operation == "add":
+        modifier = 1
+    elif operation == "subtract":
+        modifier = -1
+
+    stat_object.total_games += modifier
+    if instance.is_winner:
+        stat_object.total_wins += modifier
+
+    if not is_deck:
+        stat_object.total_kills += instance.kills
+        if instance.is_archenemy:
+            stat_object.games_as_archenemy += modifier
+            if instance.is_winner:
+                stat_object.wins_as_archenemy += modifier
+    
+    stat_object.save()
+
 
 # Update the colors a deck by inheriting the values from the commander
 @receiver(post_save, sender=Commander)
 def update_inherited_deck_attributes(sender, instance, created, **kwargs):
     deck = instance.deck
-    if created or 'colors' in kwargs.get('update_fields', []):
+    if created:
         deck.colors = instance.colors
         deck.photo = instance.photo
         deck.save()
@@ -30,36 +50,18 @@ def clear_inherited_deck_attributes(sender, instance, **kwargs):
     deck.save()
 
 
-# Update the deck and pod_players stats after a game
+# Update the Player, Deck, and PodPlayers stats after a GamePlayer is added
 @receiver(post_save, sender=GamePlayer)
-def update_player_stats(sender, instance, created, **kwargs):
+def update_player_stats(sender, instance, **kwargs):
     pod_player = PodPlayer.objects.get(player=instance.player, pod=instance.game.pod)
-
-    # Increment games, wins, kills, archenemy stats
-    pod_player.total_games += 1
-    pod_player.total_games += instance.kills
-    
-    if instance.is_winner:
-        pod_player.total_wins += 1
-    
     deck = instance.deck
-    if instance.is_winner:
-        deck.total_wins += 1
-    deck.total_games += 1
-    deck.save()
+    player = instance.player
 
-    if instance.is_archenemy:
-        pod_player.games_as_archenemy += 1
-        if instance.is_winner:
-            pod_player.wins_as_archenemy += 1
+    update_stats(instance, pod_player, "add", is_deck=False)
+    update_stats(instance, deck, "add")
+    update_stats(instance, player, "add", is_deck=False)
 
-    pod_player.save()
-
-@receiver(post_save, sender=Game)
-def update_game_stats(sender, instance, created, **kwargs):
-    if created:
-        GamePlayer.objects.filter(game=instance, deck=instance.winner).update(is_winner=True)
-
+# Updates the stats of a Player, Deck, and PodPlayer after a Game is deleted
 @receiver(pre_delete, sender=Game)
 def handle_game_deletion(sender, instance, **kwargs):
     game_players = GamePlayer.objects.filter(game=instance)
@@ -69,19 +71,8 @@ def handle_game_deletion(sender, instance, **kwargs):
         deck = game_player.deck
         pod_player = PodPlayer.objects.get(player=player, pod=instance.pod)
 
-        if game_player.is_winner:
-            player.total_wins -= 1
-            pod_player.total_wins -= 1
-            deck.total_wins -= 1
-
-        player.total_games -= 1
-        pod_player.total_games -= 1
-        deck.total_games -= 1
-        player.total_kills -= game_player.kills
-        pod_player.total_kills -= game_player.kills
-
-        player.save()
-        pod_player.save()
-        deck.save()
+        update_stats(game_player, pod_player, "subtract", is_deck=False)
+        update_stats(game_player, deck, "subtract")
+        update_stats(game_player, player, "subtract", is_deck=False)
 
     game_players.delete()
