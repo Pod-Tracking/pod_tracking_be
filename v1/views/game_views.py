@@ -27,23 +27,22 @@ def get_game_list(checked_pod: Pod):
     return Response(serializer.data)
 
 def create_game(data: dict, pod_id: int):
+    new_game_data = {
+        "pod": pod_id
+    }
+
     if "winner" in data:
         try:
             deck = Deck.objects.get(pk=data["winner"])
+            new_game_data["winner"] = deck.id
         except Deck.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        new_game_data = {
-            "pod": pod_id,
-            "winner": deck.id,
-            "game_log": data["game_log"]
-        }
-    
-    else:
-        new_game_data = {
-            "pod": pod_id,
-            "game_log": data["game_log"]
-        }
+    if "total_turns" in data:
+        new_game_data["total_turns"] = data["total_turns"]
+
+    if "game_log" in data:
+        new_game_data["game_log"] = data["game_log"]
 
     serializer = GameSerializer(data=new_game_data)
     if serializer.is_valid():
