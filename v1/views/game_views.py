@@ -5,7 +5,6 @@ from rest_framework import status
 from ..serializers.game_serializer import GameSerializer
 from ..models.pod_model import Pod
 from ..models.game_model import Game
-from ..models.deck_model import Deck
 import pdb
 
 
@@ -30,13 +29,6 @@ def create_game(data: dict, pod_id: int):
     new_game_data = {
         "pod": pod_id
     }
-
-    if "winner" in data:
-        try:
-            deck = Deck.objects.get(pk=data["winner"])
-            new_game_data["winner"] = deck.id
-        except Deck.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
     if "total_turns" in data:
         new_game_data["total_turns"] = data["total_turns"]
@@ -70,6 +62,7 @@ def get_game_details(game: Game):
     return Response(serializer.data)
 
 def update_game(game: Game, data: dict):
+    # Add logic so that only game log and total_turns are editable
     game_data = GameSerializer(game, data=data, partial=True)
     if game_data.is_valid():
         game_data.save()
