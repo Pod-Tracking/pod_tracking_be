@@ -5,8 +5,9 @@ from rest_framework import status
 from ..serializers.game_serializer import GameSerializer
 from ..models.pod_model import Pod
 from ..models.game_model import Game
-import pdb
 
+
+OPTIONAL_FIELDS = ["total_turns", "game_log"]
 
 @api_view(['GET', 'POST'])
 def game_list(request, pod_id: int):
@@ -26,15 +27,14 @@ def get_game_list(checked_pod: Pod):
     return Response(serializer.data)
 
 def create_game(data: dict, pod_id: int):
+
     new_game_data = {
         "pod": pod_id
     }
 
-    if "total_turns" in data:
-        new_game_data["total_turns"] = data["total_turns"]
-
-    if "game_log" in data:
-        new_game_data["game_log"] = data["game_log"]
+    for field in OPTIONAL_FIELDS:
+        if field in data:
+            new_game_data[field] = data[field]
 
     serializer = GameSerializer(data=new_game_data)
     if serializer.is_valid():
@@ -62,8 +62,12 @@ def get_game_details(game: Game):
     return Response(serializer.data)
 
 def update_game(game: Game, data: dict):
-    # Add logic so that only game log and total_turns are editable
-    game_data = GameSerializer(game, data=data, partial=True)
+    updated_data = {}
+    for field in OPTIONAL_FIELDS:
+        if field in data:
+            updated_data[field] = data[field]
+
+    game_data = GameSerializer(game, data=updated_data, partial=True)
     if game_data.is_valid():
         game_data.save()
         return Response(game_data.data)
