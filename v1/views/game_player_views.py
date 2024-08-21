@@ -11,7 +11,7 @@ import pdb
 OPTIONAL_FIELDS = ["is_winner", "is_archenemy", "kills"]
 
 @api_view(['GET', 'POST'])
-def game_player_list(request, pod_id: int, game_id: int):
+def game_player_list(request, game_id: int):
     try:
         checked_game = Game.objects.get(pk=game_id)
     except Game.DoesNotExist:
@@ -47,7 +47,7 @@ def create_game_player(data: dict, game: Game):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
-def game_player_details(request, pod_id: int, game_id: int, game_player_id: int):
+def game_player_details(request, game_id: int, game_player_id: int):
     try:
         Game.objects.get(pk=game_id)
     except Game.DoesNotExist:

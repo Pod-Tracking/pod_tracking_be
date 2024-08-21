@@ -43,7 +43,7 @@ urlpatterns = [
     path('pods/<int:pod_id>/games', game_views.game_list),
     path('pods/<int:pod_id>/games/<int:game_id>', game_views.game_details),
     # GamePlayer endpoints
-    path('pods/<int:pod_id>/games/<int:game_id>/game_players', game_player_views.game_player_list),
-    path('pods/<int:pod_id>/games/<int:game_id>/game_players/<int:game_player_id>', game_player_views.game_player_details),
+    path('games/<int:game_id>/game_players', game_player_views.game_player_list),
+    path('games/<int:game_id>/game_players/<int:game_player_id>', game_player_views.game_player_details),
 ]
 
