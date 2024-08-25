@@ -22,7 +22,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
     # Player endpoints
-    path('players', player_views.player_list),
+    path('players', player_views.player_list, name="v1_get_player_list"),
     path('players/<int:player_id>', player_views.player_details),
     # Deck endpoints
     path('players/<int:player_id>/decks', deck_views.deck_list),
