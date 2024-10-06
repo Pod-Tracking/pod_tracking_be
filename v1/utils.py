@@ -5,4 +5,6 @@ def process_colors(color_list: list) -> str:
     for color in color_list:
         if color in MtgColor.__members__:
             color_values.append(MtgColor[color].value)
+        else:
+            raise ValueError(f"Invalid color value: {color}")
     return ', '.join(color_values)
