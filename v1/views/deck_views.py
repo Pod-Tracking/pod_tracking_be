@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from v1.utils import validate_tcg_type, validate_deck_type
 from ..serializers.deck_serializer import DeckSerializer
 from ..models.deck_model import Deck
 from ..models.player_model import Player
@@ -25,11 +26,14 @@ def get_deck_list(checked_player: Player):
     return Response(serializer.data)
 
 def create_deck(data: dict, player_id: int):
+    tcg_type_validation_check = validate_tcg_type(data["tcg_type"])
+    deck_type_validation_check = validate_deck_type(data["deck_type"])
+
     new_deck_data = {
         "name": data["name"],
         "player": player_id,
-        "tcg_type": data["tcg_type"],
-        "deck_type": data["deck_type"]
+        "tcg_type": tcg_type_validation_check,
+        "deck_type": deck_type_validation_check
     }
 
     serializer = DeckSerializer(data=new_deck_data)
@@ -58,6 +62,10 @@ def get_deck_details(deck: Deck):
     return Response(serializer.data)
 
 def update_deck(deck: Deck, data: dict):
+    # Add logic to handle if the deck type changes
+    # if "deck_type" in data:
+    #     deck_type_validation_check = validate_deck_type(data["deck_type"])
+
     deck_data = DeckSerializer(deck, data=data, partial=True)
     if deck_data.is_valid():
         deck_data.save()
