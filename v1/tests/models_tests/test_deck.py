@@ -1,7 +1,10 @@
 from django.test import TestCase
+from django.db import IntegrityError
+from rest_framework import serializers
 from django.utils.timezone import make_aware
 from datetime import datetime
-from v1.utils import process_colors
+from v1.utils import process_colors, validate_deck_type, validate_tcg_type
+from v1.serializers.deck_serializer import DeckSerializer
 from v1.models.player_model import Player
 from v1.models.deck_model import Deck
 # To run the test file, run the following line in the terminal:
@@ -25,15 +28,15 @@ class DeckModelTest(TestCase):
         self.deck1 = Deck.objects.create(
             player=self.player1,
             name="Test Deck",
-            tcg_type="magic_the_gathering",
-            deck_type="commander"
+            tcg_type=validate_tcg_type("MAGIC"),
+            deck_type=validate_deck_type("COMMANDER")
         )
 
         self.expected_deck_response = {
             "id": self.deck1.id,
             "name": "Test Deck",
-            "tcg_type": "magic_the_gathering",
-            "deck_type": "commander"
+            "tcg_type": "MAGIC",
+            "deck_type": "COMMANDER"
         }
 
 
@@ -57,12 +60,40 @@ class DeckModelTest(TestCase):
         deck = Deck.objects.create(
             player=self.player1,
             name="New Deck",
-            tcg_type="magic_the_gathering",
-            deck_type="standard"
+            tcg_type=validate_tcg_type("MAGIC"),
+            deck_type=validate_deck_type("STANDARD")
         )
 
         self.assertEqual(deck.name, "New Deck")
-        self.assertEqual(deck.tcg_type, "magic_the_gathering")
-        self.assertEqual(deck.deck_type, "standard")
+        self.assertEqual(deck.tcg_type, "MAGIC")
+        self.assertEqual(deck.deck_type, "STANDARD")
         self.assertEqual(deck.player, self.player1)
 
+
+    # Sad path testing
+    def test_create_deck_with_invalid_tcg_type(self):
+        with self.assertRaises(ValueError):
+            Deck.objects.create(
+                player=self.player1,
+                name="Invalid TCG Deck",
+                tcg_type=validate_tcg_type("invalid_tcg"),  # Invalid TCG type
+                deck_type=validate_deck_type("COMMANDER")
+            )
+
+    def test_create_deck_with_invalid_deck_type(self):
+        with self.assertRaises(ValueError):
+            Deck.objects.create(
+                player=self.player1,
+                name="Invalid Deck Type",
+                tcg_type=validate_tcg_type("MAGIC"),
+                deck_type=validate_deck_type("invalid_type")  # Invalid deck type
+            )
+
+    def test_create_deck_without_name(self):
+        with self.assertRaises(IntegrityError):
+            Deck.objects.create(
+                player=self.player1,
+                name=None, # 
+                tcg_type=validate_tcg_type("MAGIC"),
+                deck_type=validate_deck_type("COMMANDER")
+            )
