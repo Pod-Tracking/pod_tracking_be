@@ -65,3 +65,20 @@ class GameModelTest(TestCase):
         self.assertEqual(game2.total_turns, 5)
         self.assertEqual(game2.game_log, "I won the game.")
 
+
+    # Sad path testing
+    def test_create_game_with_invalid_pod(self):
+        with self.assertRaises(ValueError):
+            Game.objects.create(
+                pod=None, # Invalid pod reference
+                total_turns=10,
+                game_log="Invalid pod id"
+            )
+
+    def test_create_game_with_invalid_total_turns_value(self):
+        with self.assertRaises(ValueError):
+            Game.objects.create(
+                pod=self.pod1,
+                total_turns="10", # Invalid data type (string instead of integer)
+                game_log="Invalid data value for total_turns",
+            )
