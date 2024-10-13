@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from utils import validate_tcg_type
 from ..serializers.pod_serializer import PodSerializer
 from ..models.pod_model import Pod
 
@@ -18,8 +19,16 @@ def get_pod_list():
     serializer = PodSerializer(pods, many=True)
     return Response(serializer.data)
 
-def create_pod(request):
-    serializer = PodSerializer(data=request.data)
+def create_pod(request: dict):
+    # The code below might be saving the error we get back from the validation check as the tcg_type which is what we don't want. Make sure this isn't the case in the Views tests and Postman.
+    tcg_type_validation_check = validate_tcg_type(request.data["tcg_type"])
+
+    new_pod_data = {
+        "name": request.data["name"],
+        "tcg_type": tcg_type_validation_check
+    }
+
+    serializer = PodSerializer(new_pod_data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -46,6 +55,8 @@ def get_specific_pod(pod: Pod):
     return Response(serializer.data)
 
 def update_specific_pod(pod: Pod, request):
+    # ensure that the tcg_type validation check can happen here too.
+
     pod_data = PodSerializer(pod, data=request.data, partial=True)
     if pod_data.is_valid():
         pod_data.save()

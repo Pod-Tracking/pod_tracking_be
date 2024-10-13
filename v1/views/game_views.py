@@ -32,6 +32,10 @@ def create_game(data: dict, pod_id: int):
         "pod": pod_id
     }
 
+    if "total_turns" in data:
+        if data["total_turns"] < 0:
+            raise ValueError("total_turns must be a positive number.")
+
     for field in OPTIONAL_FIELDS:
         if field in data:
             new_game_data[field] = data[field]
