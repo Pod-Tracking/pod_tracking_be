@@ -93,7 +93,7 @@ class DeckModelTest(TestCase):
         with self.assertRaises(IntegrityError):
             Deck.objects.create(
                 player=self.player1,
-                name=None, # 
+                name=None, # Name cannot be blank
                 tcg_type=validate_tcg_type("MAGIC"),
                 deck_type=validate_deck_type("COMMANDER")
             )

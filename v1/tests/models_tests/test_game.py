@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from django.utils.timezone import make_aware
 from datetime import datetime
@@ -59,6 +60,8 @@ class GameModelTest(TestCase):
             total_turns=5,
             game_log="I won the game.",
         )
+        game2.full_clean()
+        game2.save()
 
         self.assertEqual(game2.id, 2)
         self.assertEqual(game2.pod, self.pod2)
@@ -68,17 +71,35 @@ class GameModelTest(TestCase):
 
     # Sad path testing
     def test_create_game_with_invalid_pod(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IntegrityError):
             Game.objects.create(
                 pod=None, # Invalid pod reference
                 total_turns=10,
                 game_log="Invalid pod id"
             )
 
+
+    def test_create_game_with_negative_total_turns(self):
+        game = Game(
+            pod=self.pod1,
+            total_turns=-5,  # Invalid negative number
+            game_log="Invalid game log"
+        )
+        with self.assertRaises(ValidationError) as e:
+            game.full_clean()  # This triggers the clean() method
+
+        self.assertIn('__all__', e.exception.message_dict)
+        self.assertEqual(e.exception.message_dict['__all__'], ['The total_turns value must be a positive number.'])
+
+
     def test_create_game_with_invalid_total_turns_value(self):
-        with self.assertRaises(ValueError):
-            Game.objects.create(
-                pod=self.pod1,
-                total_turns="10", # Invalid data type (string instead of integer)
-                game_log="Invalid data value for total_turns",
-            )
+        game = Game(
+            pod=self.pod1,
+            total_turns="invalid",  # Invalid data type
+            game_log="Invalid data type for total_turns"
+        )
+        with self.assertRaises(ValidationError) as e:
+            game.full_clean()
+
+        self.assertIn('total_turns', e.exception.message_dict)        
+        self.assertEqual(e.exception.message_dict['total_turns'], ['“invalid” value must be an integer.'])
