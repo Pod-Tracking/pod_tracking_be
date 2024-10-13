@@ -8,7 +8,6 @@ class DeckSerializer(serializers.ModelSerializer):
         fields = ['id', 'player', 'name', 'tcg_type', 'deck_type', 'colors', 'photo', 'total_wins', 'total_games', 'created_at', 'updated_at']
 
     def validate(self, data):
-        pdb.set_trace()
         if not data.get('player'):
             raise serializers.ValidationError("The deck player is required.")
         
