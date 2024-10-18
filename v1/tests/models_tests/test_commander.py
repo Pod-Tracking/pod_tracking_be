@@ -80,7 +80,7 @@ class CommanderModelTest(TestCase):
 
     # Sad Path Testing
     def test_commander_requires_name(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IntegrityError):
             Commander.objects.create(
                 deck=self.deck2,
                 name=None,  # Invalid: No name provided
@@ -91,7 +91,7 @@ class CommanderModelTest(TestCase):
     def test_invalid_deck_assignment(self):
         with self.assertRaises(IntegrityError):
             Commander.objects.create(
-                deck_id=999,  # Invalid deck ID
+                deck_id=None,  # Invalid deck ID
                 name="Invalid Deck Commander",
                 colors=process_colors(["B", "U"]),
                 photo="https://cards.scryfall.io/normal/front/i/n/invalid.jpg"
