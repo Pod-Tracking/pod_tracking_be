@@ -5,6 +5,7 @@ from v1.utils import process_colors
 from v1.models.player_model import Player
 from v1.models.deck_model import Deck
 from v1.models.commander_model import Commander
+from django.db import IntegrityError
 # To run the test file, run the following line in the terminal:
 # python3 manage.py test v1.tests.models_tests.test_commander
 
@@ -88,7 +89,7 @@ class CommanderModelTest(TestCase):
             )
 
     def test_invalid_deck_assignment(self):
-        with self.assertRaises(Deck.DoesNotExist):
+        with self.assertRaises(IntegrityError):
             Commander.objects.create(
                 deck_id=999,  # Invalid deck ID
                 name="Invalid Deck Commander",

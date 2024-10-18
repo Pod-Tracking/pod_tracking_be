@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from utils import validate_tcg_type
+from v1.utils import validate_tcg_type
 from ..serializers.pod_serializer import PodSerializer
 from ..models.pod_model import Pod
 
