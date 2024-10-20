@@ -17,16 +17,33 @@ Including another URLconf
 
 from django.urls import path
 from django.conf import settings
-from .views import player_views, deck_views, commander_views
+from .views import player_views, deck_views, commander_views, pod_views, pod_player_views, game_views, game_player_views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    path('players/', player_views.player_list),
+    # Player endpoints
+    path('players', player_views.player_list, name="v1_get_player_list"),
     path('players/<int:player_id>', player_views.player_details),
-    path('players/<int:player_id>/decks/', deck_views.deck_list),
-    path('players/<int:player_id>/decks/<int:deck_id>/', deck_views.deck_details),
-
-    path('decks/<int:deck_id>/commanders/', commander_views.commander_list),
-    path('decks/<int:deck_id>/commanders/<int:commander_id>/', commander_views.commander_details),
+    # Deck endpoints
+    path('players/<int:player_id>/decks', deck_views.deck_list),
+    path('players/<int:player_id>/decks/<int:deck_id>', deck_views.deck_details),
+    # MTG Commander endpoints
+    path('players/<int:player_id>/decks/<int:deck_id>/create_commander', commander_views.commander_list),
+    path('players/<int:player_id>/decks/<int:deck_id>/deck_commander/<int:commander_id>', commander_views.commander_details),
+    # Pod endpoints
+    path('pods', pod_views.pod_list),
+    path('pods/<int:pod_id>', pod_views.pod_details),
+    # Pods by Player IDs endpoints
+    path('players/<int:player_id>/pods', pod_player_views.pods_by_player_list),
+    path('players/<int:player_id>/pods/<int:pod_id>', pod_player_views.pod_by_player_details),
+    # Players by Pod IDs endpoints
+    path('pods/<int:pod_id>/players', pod_player_views.players_by_pod),
+    path('pods/<int:pod_id>/players/<int:player_id>', pod_player_views.players_by_pod),
+    # Games endpoints
+    path('pods/<int:pod_id>/games', game_views.game_list),
+    path('pods/<int:pod_id>/games/<int:game_id>', game_views.game_details),
+    # GamePlayer endpoints
+    path('games/<int:game_id>/game_players', game_player_views.game_player_list),
+    path('games/<int:game_id>/game_players/<int:game_player_id>', game_player_views.game_player_details),
 ]
 
