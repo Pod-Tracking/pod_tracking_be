@@ -5,7 +5,7 @@
 ***"Now THIS is Pod Tracking"***
 
 ## Introduction
-Welcome to the initial repository of Pod Tracking! Pod Tracking is an application that allows Magic The Gathering players to track their group's game history, game and player statistics, and eventually, deck statistics. This repository houses the codebase for our backend services, crafted using Python and the Django REST framework.
+Welcome to the initial repository of Pod Tracking! Pod Tracking is an application that allows Magic The Gathering players to track their group's game history, game and player statistics, and eventually, deck statistics. This repository houses the codebase for our backend services, crafted using Python with the Django REST framework.
 
 ## To Do:
 - Review other views logic and update requests to make sure they handle enum data properly.
