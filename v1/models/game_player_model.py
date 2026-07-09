@@ -2,11 +2,13 @@ from django.db import models
 from ..models.deck_model import Deck
 from ..models.player_model import Player
 from ..models.game_model import Game
+from ..models.commander_model import Commander
 
 class GamePlayer(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    deck = models.ForeignKey(Deck, on_delete=models.SET_NULL, null=True)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='participants')
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='game_participations')
+    deck = models.ForeignKey(Deck, on_delete=models.PROTECT, related_name='game_participations')
+    commander = models.ForeignKey(Commander, on_delete=models.SET_NULL, null=True, related_name='game_participations')
 
     is_winner = models.BooleanField(default=False)
     is_archenemy = models.BooleanField(default=False)
