@@ -15,6 +15,9 @@ class GamePlayer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('game', 'player')
+
     def __str__(self):
         formatted_game_date = self.game.created_at.strftime("%Y-%m-%d %H:%M")
-        return f"'{self.player.name}' in {formatted_game_date} game playing the '{self.deck.name}' deck"
+        return f"'{self.player.username}' in {formatted_game_date} game playing the '{self.deck.name}' deck"

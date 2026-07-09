@@ -14,11 +14,3 @@ class Game(models.Model):
     def __str__(self):
         formatted_date = self.created_at.strftime("%Y-%m-%d %H:%M")
         return f"Game from {formatted_date}, in the '{self.pod.name}' Pod"
-
-    def clean(self):
-        # Check if total_turns is a positive and an integer
-        if self.total_turns is not None:
-            if not isinstance(self.total_turns, int):
-                raise ValidationError("The total_turns value must be an integer.")
-            if self.total_turns < 0:
-                raise ValidationError("The total_turns value must be a positive number.")

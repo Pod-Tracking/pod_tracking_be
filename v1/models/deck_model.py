@@ -11,11 +11,22 @@ class Deck(models.Model):
     deck_type = models.CharField(max_length=50, null=True, choices=DeckType.choices())
     colors = models.CharField(max_length=255, blank=True, null=True)
     photo = models.URLField(null=True, blank=True)
-    total_games = models.IntegerField(default=0)
-    total_wins = models.IntegerField(default=0)
+    archived = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def total_games(self) -> int:
+        return self.game_participations.count()
+    
+    @property
+    def total_wins(self) -> int:
+        return self.game_participations.filter(is_winner=True).count()
+    
+    @property
+    def current_commander(self):
+        return self.commanders.filter(is_current=True).first()
 
     def __str__(self):
         return self.name
